@@ -68,7 +68,6 @@ class Worker implements Runnable {
                 out.write(("Set-Cookie: history=" + history + "; length=4096; path=/\r\n").getBytes());
                 out.write(("Content-Length: " + length + "\r\n").getBytes());
                 out.write("\r\n".getBytes());
-                out.flush();
                 break;
             case "HEAD":
                 out.write("HTTP/1.1 200 OK\r\n".getBytes());
@@ -81,18 +80,21 @@ class Worker implements Runnable {
                 out.write("\r\n".getBytes());
                 break;
         }
+        out.flush();
     }
 
     private static void send400(OutputStream out) throws IOException {
         out.write("HTTP/1.1 400 Bad Request\r\n".getBytes());
         out.write("Server: MyServer\r\n".getBytes());
         out.write("\r\n".getBytes());
+        out.flush();
     }
 
     private static void send404(OutputStream out) throws IOException {
         out.write("HTTP/1.1 404 Not found\r\n".getBytes());
         out.write("Server: MyServer\r\n".getBytes());
         out.write("\r\n".getBytes());
+        out.flush();
     }
 
     private static void sendContent(OutputStream out, File file) throws IOException {
